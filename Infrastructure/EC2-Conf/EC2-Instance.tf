@@ -51,10 +51,9 @@ locals {
   mount_dir                 = "/mnt/efs"
 }
 
-#Retrieve the AMI for the bastion host
+/* #Retrieve the AMI for the bastion host
 data "aws_ami" "bastion_ami" {
     #most_recent = true
-
     filter {
     name   = "tag:Name"                  # The tag key
     values = ["${var.BastionHostAMI}"]  # The tag value
@@ -64,30 +63,35 @@ data "aws_ami" "bastion_ami" {
 #Retrieve the AMI for the bastion host
 data "aws_ami" "privatehost_ami" {
     #most_recent = true
-
     filter {
     name   = "tag:Name"                  # The tag key
     values = ["${var.PrivateHostAMI}"]  # The tag value
   }
-}
+} */
 
-# Create the Security Groups
-module "SecurityGroups_Module" {
-  source                          = "./Security-Groups-Conf"
-  vpc_id                          = var.vpc_id
-  allowed_hosts                   = var.allowed_hosts
-  TerraformDB_SecurityGroup_Id    = var.TerraformDB_SecurityGroup_Id
-  project_environment             = var.project_environment
-  deploy_private_resources        = var.deploy_private_resources
-}
+#Retrieve the EBS in order to attach it to the bastion host
+
+/* data "aws_ebs_volume" "ebs_volume"{
+  most_recent = true
+
+  filter {
+    name   = "tag:Name"
+    values = ["ebs-bastion-host-${var.project_environment}"]
+  }
+
+} */
 
 #Fetch the instance profile created in the bootstrap workspace
 data "aws_iam_instance_profile" "BastionHostProfile" {
   name = "BastionHostProfile-${var.project_environment}"
 }
 
+
 resource "aws_instance" "BastionHost" {
-    ami                         = data.aws_ami.bastion_ami.id
+    ami                         = "ami-0bbab131ebb18fcb4"
+    /* launch_template{
+      name = "BastionHost-LaunchTemplate-${var.project_environment}"
+    } */
     associate_public_ip_address = true
     availability_zone           = "us-east-1a"
     iam_instance_profile        =  data.aws_iam_instance_profile.BastionHostProfile.name
@@ -137,11 +141,15 @@ resource "aws_instance" "BastionHost" {
     }
 }
 
+
 resource "aws_instance" "PrivateHost" {
-    ami                         = data.aws_ami.privatehost_ami.id
+    ami                         = "ami-0bbab131ebb18fcb4"
+   /*  launch_template{
+      name = "BastionHost-LaunchTemplate-${var.project_environment}"
+    } */
     availability_zone           = "us-east-1b"
     #iam_instance_profile        =  aws_iam_instance_profile.BastionHostProfile.name
-    instance_type               = "t2.micro"
+    instance_type               = "t3.small"
     vpc_security_group_ids      = [module.SecurityGroups_Module.PrivateHostSecurityGroup_Id_Output]
     subnet_id                   = var.subnet_B_id
     count                       = var.deploy_private_resources ? 1 : 0

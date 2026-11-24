@@ -1,3 +1,4 @@
+#File used by Docker Compose to define and run multi-container Docker applications. Instead of launching each container manually with long terminal commands, this file acts as a single blueprint to configure, connect, and start an entire software stack at once.
 services:
   jenkins:
     build: .

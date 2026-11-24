@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:2.555.2-jdk21
+FROM jenkins/jenkins:2.580.2-jdk21
 USER root
 
 RUN apt-get update && apt-get install -y lsb-release ca-certificates curl vim wget gnupg git awscli jq less && \
@@ -32,12 +32,8 @@ RUN mkdir -p /var/jenkins_home && \
     mkdir -p /app/Terraform
 
 COPY . /app/Terraform
-
 WORKDIR /var/jenkins_home/workspace
-
 RUN chown -R jenkins:jenkins /app/Terraform
-
 USER jenkins
-
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
 

@@ -80,6 +80,19 @@ module "EBS_Volume_Module" {
     count                   = var.enable_ebs ? 1 : 0
 }
 
+module "ECS_Conf_Module"{
+  source                  = "./ECS-Conf"
+  project_environment     = var.project_environment
+  aws_account_id          = var.aws_account_id
+  desired_tasks           = var.desired_tasks
+  jenkins_image_name      = var.jenkins_image_name
+  garafana_image_name     = var.garafana_image_name
+  efs_id                  = module.EFS_Module.efs_system_id
+  enable_garafana         = var.enable_garafana
+  vpc_id                  = module.VPC_Module.VPC_Terraform_Output.id
+  subnet_a                = module.VPC_Module.VPC_Subnet_A_Output.id
+}
+
 output "efs_system_id" {
     value = module.EFS_Module.efs_system_id
 }

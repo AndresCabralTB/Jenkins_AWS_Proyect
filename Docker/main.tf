@@ -1,10 +1,10 @@
-module "ECR_Module"{
+module "Docker_Module"{
     source                      = "./Docker-Conf"
-    aws_account_id              = var.aws_account_id
+    #aws_account_id              = var.aws_account_id
     project_environment         = var.project_environment
-    desired_tasks               = var.desired_tasks
-    jenkins_image_name          = var.jenkins_image_name
-    garafana_image_name         = var.garafana_image_name
-    enable_garafana             = var.enable_garafana
-    efs_id                      = var.efs_id #Currently not used
+    #desired_tasks               = var.desired_tasks
+    #jenkins_image_name          = var.jenkins_image_name
+    #garafana_image_name         = var.garafana_image_name
+    #enable_garafana             = var.enable_garafana
+    #efs_id                      = var.efs_id #Currently not used
 }

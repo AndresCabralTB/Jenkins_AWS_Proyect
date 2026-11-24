@@ -24,10 +24,13 @@ resource "aws_iam_group_policy_attachment" "InfrastructureAccessGroupPolicies" {
         "arn:aws:iam::aws:policy/AmazonRDSFullAccess",        # Full RDS management — instances, snapshots, parameter groups
         "arn:aws:iam::aws:policy/AmazonS3FullAccess",         # Full S3 access — buckets, objects, policies
         "arn:aws:iam::${var.aws_account_id}:policy/AWSSecretsManager_ReadAccessOnly",  # Read-only — can retrieve secrets but not modify them
-        "arn:aws:iam::aws:policy/AWSCloudShellFullAccess",    # Browser-based terminal access to AWS CLI
+        #"arn:aws:iam::aws:policy/AWSCloudShellFullAccess",    # Browser-based terminal access to AWS CLI
         "arn:aws:iam::${var.aws_account_id}:policy/AdminAccess_Policy",
         "arn:aws:iam::${var.aws_account_id}:policy/New_Systems_Manager_Policy",
-        "arn:aws:iam::aws:policy/AmazonElasticFileSystemFullAccess"
+        "arn:aws:iam::aws:policy/AmazonElasticFileSystemFullAccess",
+        #"arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess",
+        "arn:aws:iam::aws:policy/AmazonECS_FullAccess",
+        "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
     ])
     policy_arn = each.value
 }

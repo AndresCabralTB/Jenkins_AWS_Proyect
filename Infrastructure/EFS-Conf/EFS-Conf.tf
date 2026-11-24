@@ -10,6 +10,10 @@ variable "BastionHost_SG_id"{
     type = string
 }
 
+data "aws_iam_role" "ecs-task-role"{
+    name = "ecs-role-${var.project_environment}"
+}
+
 resource "aws_efs_file_system" "efs_system" {
   creation_token = "efs-docker-volumes-${var.project_environment}"
   encrypted = true

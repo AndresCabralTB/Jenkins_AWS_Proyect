@@ -22,7 +22,7 @@ resource "aws_iam_role" "SSMSessionManagerRole" {
     })
     max_session_duration = 3600
     tags = {
-      name = "RoleBastionHost"
+      name = "RoleBastionHost-${var.project_environment}"
     }
 }
 
